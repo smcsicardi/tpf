@@ -46,7 +46,13 @@ salaC (SalaConPelicula c s q _) p
 				|otherwise salaC c p
 salaC (TicketVendido c _) p = salaC c p
 
-ticketsVendidosC
+ticketsVendidosC :: Cine -> [Ticket]
+ticketsVendidosC C _ = []
+ticketsVendidosC (SalaSinPelicula c _) = ticketsVendidosC c 
+ticketsVendidosC (SalaConPelicula c _ _ _) = ticketsVendidosC c
+ticketsVendidosC (TicketVendido c t)
+				|usadoT t = ticketsVendidosC c
+				|otherwise = t:(ticketsVendidosC c)
 
 
 
