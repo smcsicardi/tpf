@@ -9,23 +9,45 @@ data Cine = C Nombre |
 			SalaConPelicula Cine Sala Pelicula Int | 
 			TicketVendido Cine Ticket deriving (Show)
 
-nuevoc :: String -> Cine
-nuevoc n = C n
+nuevoC :: String -> Cine
+nuevoC n = C n
 
-nombrec :: Cine -> String
-nombrec C n = n
-nombrec SalaSinPelicula c _ = nombrec c
-nombrec SalaConPelicula c _ _ _ = nombrec c
-nombrec TicketVendido c _ = nombrec c
+nombreC :: Cine -> String
+nombreC C n = n
+nombreC SalaSinPelicula c _ = nombreC c
+nombreC SalaConPelicula c _ _ _ = nombreC c
+nombreC TicketVendido c _ = nombreC c
 
-peliculasc :: Cine -> [Pelicula]
-peliculasc C _ = []
-peliculasc SalaSinPelicula c _ = peliculasc c
-peliculasc SalaConPelicula c _ p _ = p:peliculasc c
-peliculasc TicketVendido c _ = peliculasc c
+peliculasC :: Cine -> [Pelicula]
+peliculasC C _ = []
+peliculasC SalaSinPelicula c _ = peliculasC c
+peliculasC SalaConPelicula c _ p _ = p:peliculasC c
+peliculasC TicketVendido c _ = peliculasC c
 
-salasc :: Cine -> [Sala]
-salasc C _ = []
-salasc SalaSinPelicula c s = s:salasc c
-salasc SalaConPelicula c s _ _ = s:salasc c
-salasc TicketVendido c _ = salasc c
+salasC :: Cine -> [Sala]
+salasC C _ = []
+salasC SalaSinPelicula c s = s:salasC c
+salasC SalaConPelicula c s _ _ = s:salasC c
+salasC TicketVendido c _ = salasC c
+
+espectadoresC :: Cine -> Sala -> Int
+espectadoresC (SalaSinPelicula c r) s
+				|r==s = 0
+				|otherwise espectadoresC c s
+espectadoresC (SalaConPelicula c r _ i) s 
+				|r==s = i
+				|otherwise espectadoresC c s
+espectadoresC (TicketVendido c _) s = espectadoresC c s
+
+salaC :: Cine -> Pelicula -> Sala
+salaC (SalaSinPelicula c _) p = salaC c p
+salaC (SalaConPelicula c s q _) p 
+				|q==p = s
+				|otherwise salaC c p
+salaC (TicketVendido c _) p = salaC c p
+
+ticketsVendidosC
+
+
+
+
