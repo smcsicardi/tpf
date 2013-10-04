@@ -71,9 +71,10 @@ sinRepetidos _ = True
 todosLosTicketsParaLaMismaSalaT :: [Ticket] -> Bool
 todosLosTicketsParaLaMismaSalaT (t:tt:ts) = (salaT t == salaT tt) && todosLosTicketsParaLaMismaSalaT tt:ts
 todosLosTicketsParaLaMismaSalaT _ = True
+-- mofidicado.. como estaba, la funcion siempre devolvía True a la primera ejecución
 
 cambiarSalaT :: [Ticket] -> Sala -> Sala -> [Ticket]
 cambiarSalaT [] _ _ = []
 cambiarSalaT (t:ts) s1 s2
-	| sala t == s1 = (nuevoT (pelicula t) s2 usadoT t ) : cambiarSalaT ts s1 s2
+	| salaT t == s1 = (nuevoT (pelicula t) s2 (usadoT t)) : cambiarSalaT ts s1 s2
 	| otherwise = t : cambiarSalaT ts s1 s2
