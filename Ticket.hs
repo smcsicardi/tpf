@@ -69,12 +69,11 @@ sinRepetidos _ = True
 -- ##### acá TERMINA peliculaMenosVistaT
 
 todosLosTicketsParaLaMismaSalaT :: [Ticket] -> Bool
-  todosLosTicketsParaLaMismaSalaT [] = True
-  todosLosTicketsParaLaMismaSalaT [_] = True
-  todosLosTicketsParaLaMismaSalaT t:tt:ts = (sala t == sala tt) && todosLosTicketsParaLaMismaSalaT tt:ts
+todosLosTicketsParaLaMismaSalaT (t:tt:ts) = (salaT t == salaT tt) && todosLosTicketsParaLaMismaSalaT tt:ts
+todosLosTicketsParaLaMismaSalaT _ = True
 
 cambiarSalaT :: [Ticket] -> Sala -> Sala -> [Ticket]
-  cambiarSalaT [] _ _ = []
-  cambiarSalaT (t:ts) s1 s2
-    | sala t == s1 = (nuevoT (pelicula t) s2 usadoT t ) : cambiarSalaT ts s1 s2
-    | otherwise = t : cambiarSalaT ts s1 s2
+cambiarSalaT [] _ _ = []
+cambiarSalaT (t:ts) s1 s2
+	| sala t == s1 = (nuevoT (pelicula t) s2 usadoT t ) : cambiarSalaT ts s1 s2
+	| otherwise = t : cambiarSalaT ts s1 s2
