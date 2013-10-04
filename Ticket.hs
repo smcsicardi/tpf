@@ -63,12 +63,8 @@ pelTsAux _ y = y
 
 -- aux
 sinRepetidos :: [Pelicula] -> Bool
-sinRepetidos (x:xs) = distintoAtodos x xs && sinRepetidos xs
+sinRepetidos (x:xs) = not (elem x xs) && sinRepetidos xs
 sinRepetidos _ = True
-
-distintoAtodos :: Pelicula -> [Pelicula] -> Bool
-distintoAtodos x (y:xs) = not (x == y) && distintoAtodos x xs
-distintoAtodos _ _ = True
 
 -- ##### acá TERMINA peliculaMenosVistaT
 
