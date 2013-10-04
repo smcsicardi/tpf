@@ -1,6 +1,6 @@
 -- 1era funcion aux
 sinRepetidos :: (Eq a) => [a] -> Bool
-sinRepetidos (x:xs) = not elem x xs && sinRepetidos xs
+sinRepetidos (x:xs) = not (x == y) && distintoAtodos x xs
 sinRepetidos _ = True
 
 -- 2da funcion aux
