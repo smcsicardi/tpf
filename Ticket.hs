@@ -4,3 +4,8 @@ import Tipos
 import Pelicula
 
 data Ticket = TicketSinUsar Sala Pelicula | TicketUsado Ticket deriving (Show, Eq)
+
+todosLosTicketsParaLaMismaSalaT :: [Ticket] -> Bool
+  todosLosTicketsParaLaMismaSalaT [] = True
+  todosLosTicketsParaLaMismaSalaT [_] = True
+  todosLosTicketsParaLaMismaSalaT t:tt:ts = (sala t == sala tt) && todosLosTicketsParaLaMismaSalaT tt:ts
