@@ -1,4 +1,4 @@
-module Pelicula (Pelicula, nuevaP, nombreP, generosP, actoresP, es3DP) where --, agruparPelisPorGeneroP, generarSagaDePeliculasP) where
+module Pelicula (Pelicula, nuevaP, nombreP, generosP, actoresP, es3DP), agruparPelisPorGeneroP, generarSagaDePeliculasP) where
 
 import Tipos
 
