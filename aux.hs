@@ -7,3 +7,8 @@ sinRepetidos _ = True
 listaOrdenada :: (Ord a) => [a] -> Bool
 listaOrdenada (x:y:xs) = x <= y && listaOrdenada (y:xs)
 listaOrdenada _ = True
+
+-- 4ta funcion aux
+primeros :: [(a,b)] -> [a]
+primeros (x:xs) = fst x : primeros xs
+primeros _ = []
