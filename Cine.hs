@@ -13,41 +13,41 @@ nuevoC :: String -> Cine
 nuevoC n = C n
 
 nombreC :: Cine -> String
-nombreC C n = n
-nombreC SalaSinPelicula c _ = nombreC c
-nombreC SalaConPelicula c _ _ _ = nombreC c
-nombreC TicketVendido c _ = nombreC c
+nombreC (C n) = n
+nombreC (SalaSinPelicula c _) = nombreC c
+nombreC (SalaConPelicula c _ _ _) = nombreC c
+nombreC (TicketVendido c _) = nombreC c
 
 peliculasC :: Cine -> [Pelicula]
-peliculasC C _ = []
-peliculasC SalaSinPelicula c _ = peliculasC c
-peliculasC SalaConPelicula c _ p _ = p:peliculasC c
-peliculasC TicketVendido c _ = peliculasC c
+peliculasC (C _) = []
+peliculasC (SalaSinPelicula c _) = peliculasC c
+peliculasC (SalaConPelicula c _ p _) = p:peliculasC c
+peliculasC (TicketVendido c _) = peliculasC c
 
 salasC :: Cine -> [Sala]
-salasC C _ = []
-salasC SalaSinPelicula c s = s:salasC c
-salasC SalaConPelicula c s _ _ = s:salasC c
-salasC TicketVendido c _ = salasC c
+salasC (C _) = []
+salasC (SalaSinPelicula c s) = s:salasC c
+salasC (SalaConPelicula c s _ _) = s:salasC c
+salasC (TicketVendido c _) = salasC c
 
 espectadoresC :: Cine -> Sala -> Int
 espectadoresC (SalaSinPelicula c r) s
 				|r==s = 0
-				|otherwise espectadoresC c s
+				|otherwise = espectadoresC c s
 espectadoresC (SalaConPelicula c r _ i) s 
 				|r==s = i
-				|otherwise espectadoresC c s
+				|otherwise = espectadoresC c s
 espectadoresC (TicketVendido c _) s = espectadoresC c s
 
 salaC :: Cine -> Pelicula -> Sala
 salaC (SalaSinPelicula c _) p = salaC c p
 salaC (SalaConPelicula c s q _) p 
 				|q==p = s
-				|otherwise salaC c p
+				|otherwise = salaC c p
 salaC (TicketVendido c _) p = salaC c p
 
 ticketsVendidosC :: Cine -> [Ticket]
-ticketsVendidosC C _ = []
+ticketsVendidosC (C _) = []
 ticketsVendidosC (SalaSinPelicula c _) = ticketsVendidosC c 
 ticketsVendidosC (SalaConPelicula c _ _ _) = ticketsVendidosC c
 ticketsVendidosC (TicketVendido c t)
@@ -55,7 +55,10 @@ ticketsVendidosC (TicketVendido c t)
 				|otherwise = t:(ticketsVendidosC c)
 
 abrirSalaC :: Cine -> Sala -> Cine
-abrirSalaC c s = SalaSinPelicula c s
+abrirSalaC (C n) s = SalaSinPelicula (C n) s
+abrirSalaC (SalaSinPelicula c sc) s = SalaSinPelicula (abrirSalaC c s) sc
+abrirSalaC (SalaConPelicula c sc pc ic) s = SalaConPelicula (abrirSalaC c s) sc pc ic
+abrirSalaC (TicketVendido c t) s = TicketVendido (abrirSalaC c s) t
 
 
 
