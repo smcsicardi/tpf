@@ -54,6 +54,8 @@ ticketsVendidosC (TicketVendido c t)
 				|usadoT t = ticketsVendidosC c
 				|otherwise = t:(ticketsVendidosC c)
 
+abrirSalaC :: Cine -> Sala -> Cine
+abrirSalaC c s = SalaSinPelicula c s
 
 
 
