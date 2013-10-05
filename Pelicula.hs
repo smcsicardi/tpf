@@ -1,6 +1,7 @@
 module Pelicula (Pelicula, nuevaP, nombreP, generosP, actoresP, es3DP, agruparPelisPorGeneroP, generarSagaDePeliculasP) where
 
 import Tipos
+import Auxiliares
 
 data Pelicula = P Nombre [Genero] [Actor] Bool deriving (Show, Eq)
 
@@ -38,9 +39,3 @@ generosDePelis ps = limpiarRepetidos (obtenerGeneros ps)
 generarSagaDePeliculasP :: [Actor] -> [Genero] -> [Nombre] -> [Pelicula]
 generarSagaDePeliculasP as gs (n:xs) = nuevaP n gs as False:generarSagaDePeliculasP as gs xs
 generarSagaDePeliculasP _ _ _ = []
-
-limpiarRepetidos :: (Eq a) => [a] -> [a]
-limpiarRepetidos [] = []
-limpiarRepetidos (x:xs)
-  | elem x xs = limpiarRepetidos xs
-  | otherwise = x:limpiarRepetidos xs

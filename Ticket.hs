@@ -2,71 +2,51 @@ module Ticket (Ticket, nuevoT, salaT, peliculaT, usadoT, usarT, peliculaMenosVis
 
 import Tipos
 import Pelicula
+import Auxiliares
 
 data Ticket = TicketSinUsar Sala Pelicula | TicketUsado Ticket deriving (Show, Eq)
 
 nuevoT :: Pelicula -> Sala -> Bool -> Ticket
-nuevoT p s esUsado
-	| esUsado = TicketUsado (t)
+nuevoT p s u
+	| u = TicketUsado t
 	| otherwise = t
-		where t = TicketSinUsar s p
+  where t = TicketSinUsar s p
 
 peliculaT :: Ticket -> Pelicula
-peliculaT (TicketSinUsar _ x) = x
-peliculaT (TicketUsado (TicketSinUsar _ x)) = x
-peliculaT _ = error "No es un ticket valido"
+peliculaT (TicketUsado t) = peliculaT t
+peliculaT (TicketSinUsar _ p) = p
+-- Como el constructor permite el formato (TicketUsado TicketUsado TickeSinUsar sala peli),
+-- recursivamente "saco los TicketUsado" hasta llegar a la pelicula en si.
 
 salaT :: Ticket -> Sala
-salaT (TicketSinUsar  x _) = x
-salaT (TicketUsado (TicketSinUsar x _)) = x
-salaT _ = error "No es un ticket valido"
+salaT (TicketUsado t) = salaT t
+salaT (TicketSinUsar s _) = s
 
 usadoT :: Ticket -> Bool
 usadoT (TicketUsado _) = True
-usadoT (TicketSinUsar _ _) = False
+usadoT _ = False
 
 usarT :: Ticket -> Ticket
-usarT (TicketSinUsar s p) = TicketUsado (TicketSinUsar s p)
 usarT (TicketUsado _) = error "El ticket ya estaba usado"
-
-
--- ##### acá COMIENZA peliculaMenosVistaT
+usarT t = TicketUsado t
 
 peliculaMenosVistaT :: [Ticket] -> Pelicula
-peliculaMenosVistaT x = menosVista (psEnTickets x) x
+peliculaMenosVistaT x = menosVista (pelisEnTickets x) x
+  where menosVista [p] _ = p
+        menosVista (a:b:ps) ts
+          | vecesVista a ts <= vecesVista b ts = menosVista a:ps
+          | otherwise = menosVista b:ps
 
--- toma la lista de todas las peliculas que hay en los tickets (sin repetidas) y la lista de tickets
-menosVista :: [Pelicula] -> [Ticket] -> Pelicula
-menosVista [p] _ = p
-menosVista (p:ps) ts
-	| vecesVista p ts <= vecesVista (laMenosVista) ts = p
-	| otherwise = laMenosVista
-		where laMenosVista = menosVista ps ts
-
--- en la especificación esta función se llama 'sumaUsado'; creo que con este nombre se entiende mejor su función
-vecesVista :: Pelicula -> [Ticket] -> Integer
+vecesVista :: Pelicula -> [Ticket] -> In\
 vecesVista _ [] = 0
 vecesVista p (x:xs)
 	| usadoT x && p == (peliculaT x) = 1 + vecesVista p xs
 	| otherwise = vecesVista p xs
 
--- obtiene la lista de todas las peliculas que aparecen en una lista de tickets
-psEnTickets :: [Ticket] -> [Pelicula]
-psEnTickets x = pelTsAux x []
-
-pelTsAux :: [Ticket] -> [Pelicula] -> [Pelicula]
-pelTsAux (x:xs) y
-	| sinRepetidos nl = pelTsAux xs nl
-	| otherwise = pelTsAux xs y
-		where nl = y ++ [peliculaT x]
-pelTsAux _ y = y
-
--- aux
-sinRepetidos :: [Pelicula] -> Bool
-sinRepetidos (x:xs) = not (elem x xs) && sinRepetidos xs
-sinRepetidos _ = True
-
--- ##### acá TERMINA peliculaMenosVistaT
+pelisEnTickets :: [Ticket] -> [Pelicula]
+pelisEnTickets t = limpiarRepetidos todasLasPelis t
+  where todasLasPelis [] = []
+        todasLasPelis (t:ts) = peliculaT t:todasLasPelis ts
 
 todosLosTicketsParaLaMismaSalaT :: [Ticket] -> Bool
 todosLosTicketsParaLaMismaSalaT (t:tt:ts) = (salaT t == salaT tt) && todosLosTicketsParaLaMismaSalaT tt:ts
@@ -75,5 +55,5 @@ todosLosTicketsParaLaMismaSalaT _ = True
 cambiarSalaT :: [Ticket] -> Sala -> Sala -> [Ticket]
 cambiarSalaT [] _ _ = []
 cambiarSalaT (t:ts) s1 s2
-	| salaT t == s1 = (nuevoT (pelicula t) s2 (usadoT t)) : cambiarSalaT ts s1 s2
-	| otherwise = t : cambiarSalaT ts s1 s2
+	| salaT t == s1 = nuevoT (pelicula t) s2 (usadoT t):cambiarSalaT ts s1 s2
+	| otherwise = t:cambiarSalaT ts s1 s2
