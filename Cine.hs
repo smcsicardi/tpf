@@ -55,10 +55,7 @@ ticketsVendidosC (TicketVendido c t)
 				|otherwise = t:(ticketsVendidosC c)
 
 abrirSalaC :: Cine -> Sala -> Cine
-abrirSalaC (C n) s = SalaSinPelicula (C n) s
-abrirSalaC (SalaSinPelicula c sc) s = SalaSinPelicula (abrirSalaC c s) sc
-abrirSalaC (SalaConPelicula c sc pc ic) s = SalaConPelicula (abrirSalaC c s) sc pc ic
-abrirSalaC (TicketVendido c t) s = TicketVendido (abrirSalaC c s) t
+abrirSalaC c s = SalaSinPelicula c s
 
 
 
