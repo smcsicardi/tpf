@@ -8,8 +8,8 @@ data Ticket = TicketSinUsar Sala Pelicula | TicketUsado Ticket deriving (Show, E
 
 nuevoT :: Pelicula -> Sala -> Bool -> Ticket
 nuevoT p s u
-	| u = TicketUsado t
-	| otherwise = t
+  | u = TicketUsado t
+  | otherwise = t
   where t = TicketSinUsar s p
 
 peliculaT :: Ticket -> Pelicula
