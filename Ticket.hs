@@ -37,7 +37,7 @@ peliculaMenosVistaT x = menosVista (pelisEnTickets x) x
           | vecesVista a ts <= vecesVista b ts = menosVista a:ps
           | otherwise = menosVista b:ps
 
-vecesVista :: Pelicula -> [Ticket] -> In\
+vecesVista :: Pelicula -> [Ticket] -> Int
 vecesVista _ [] = 0
 vecesVista p (x:xs)
 	| usadoT x && p == (peliculaT x) = 1 + vecesVista p xs
