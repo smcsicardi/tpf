@@ -1,4 +1,4 @@
-module Pelicula (Pelicula, nuevaP, nombreP, generosP, actoresP, es3DP), agruparPelisPorGeneroP, generarSagaDePeliculasP) where
+module Pelicula (Pelicula, nuevaP, nombreP, generosP, actoresP, es3DP, agruparPelisPorGeneroP, generarSagaDePeliculasP) where
 
 import Tipos
 
@@ -26,18 +26,21 @@ agruparPelisPorGeneroP ps = pelisPorGeneros (generosDePelis ps)
 
 pelisDelGenero :: [Pelicula] -> Genero -> [Pelicula]
 pelisDelGenero  [] g = []
-pelisDelGenero ((P n gs as b):ps) g
-  | elem g gs = (P n gs as b):pelisDelGenero ps g
+pelisDelGenero (p:ps) g
+  | elem g (generosP p) = p:pelisDelGenero ps g
   | otherwise = pelisDelGenero ps g
 
 generosDePelis :: [Pelicula] -> [Genero]
-generosDePelis ps = obtenerGeneros ps []
-  where obtenerGeneros [] x = x
-        obtenerGeneros ((P _ [] _ _):ps) xs = obtenerGeneros ps xs
-        obtenerGeneros ((P n (g:gs) as b):ps) xs
-          | elem g xs  = obtenerGeneros  ((P n gs as b):ps) xs
-          | otherwise = obtenerGeneros ((P n gs as b):ps) (g:xs)
+generosDePelis ps = limpiarRepetidos (obtenerGeneros ps)
+  where obtenerGeneros [] = []
+        obtenerGeneros (p:ps) = generosP p ++ obtenerGeneros ps
 
 generarSagaDePeliculasP :: [Actor] -> [Genero] -> [Nombre] -> [Pelicula]
-generarSagaDePeliculasP as gs (n:xs) = [P n gs as False] ++ generarSagaDePeliculasP as gs xs
+generarSagaDePeliculasP as gs (n:xs) = nuevaP n gs as False:generarSagaDePeliculasP as gs xs
 generarSagaDePeliculasP _ _ _ = []
+
+limpiarRepetidos :: (Eq a) => [a] -> [a]
+limpiarRepetidos [] = []
+limpiarRepetidos (x:xs)
+  | elem x xs = limpiarRepetidos xs
+  | otherwise = x:limpiarRepetidos xs
