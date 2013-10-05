@@ -44,7 +44,7 @@ vecesVista p (x:xs)
 	| otherwise = vecesVista p xs
 
 pelisEnTickets :: [Ticket] -> [Pelicula]
-pelisEnTickets t = limpiarRepetidos todasLasPelis t
+pelisEnTickets n = limpiarRepetidos todasLasPelis n
   where todasLasPelis [] = []
         todasLasPelis (t:ts) = peliculaT t:todasLasPelis ts
 
