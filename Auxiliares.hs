@@ -1,4 +1,4 @@
-module Auxiliares (sinRepetdos, listaOrdenada, primeros, limpiarRepetidos) where
+module Auxiliares (sinRepetidos, listaOrdenada, primeros, limpiarRepetidos) where
 
 sinRepetidos :: (Eq a) => [a] -> Bool
 sinRepetidos (x:xs) = not (elem x xs) && sinRepetidos xs

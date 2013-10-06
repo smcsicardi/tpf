@@ -34,8 +34,8 @@ peliculaMenosVistaT :: [Ticket] -> Pelicula
 peliculaMenosVistaT x = menosVista (pelisEnTickets x) x
   where menosVista [p] _ = p
         menosVista (a:b:ps) ts
-          | vecesVista a ts <= vecesVista b ts = menosVista a:ps
-          | otherwise = menosVista b:ps
+          | vecesVista a ts <= vecesVista b ts = menosVista (a:ps) ts
+          | otherwise = menosVista (b:ps) ts
 
 vecesVista :: Pelicula -> [Ticket] -> Int
 vecesVista _ [] = 0
@@ -44,16 +44,16 @@ vecesVista p (x:xs)
 	| otherwise = vecesVista p xs
 
 pelisEnTickets :: [Ticket] -> [Pelicula]
-pelisEnTickets n = limpiarRepetidos todasLasPelis n
+pelisEnTickets n = limpiarRepetidos (todasLasPelis n)
   where todasLasPelis [] = []
         todasLasPelis (t:ts) = peliculaT t:todasLasPelis ts
 
 todosLosTicketsParaLaMismaSalaT :: [Ticket] -> Bool
-todosLosTicketsParaLaMismaSalaT (t:tt:ts) = (salaT t == salaT tt) && todosLosTicketsParaLaMismaSalaT tt:ts
+todosLosTicketsParaLaMismaSalaT (t:tt:ts) = (salaT t == salaT tt) && todosLosTicketsParaLaMismaSalaT (tt:ts)
 todosLosTicketsParaLaMismaSalaT _ = True
 
 cambiarSalaT :: [Ticket] -> Sala -> Sala -> [Ticket]
 cambiarSalaT [] _ _ = []
 cambiarSalaT (t:ts) s1 s2
-	| salaT t == s1 = nuevoT (pelicula t) s2 (usadoT t):cambiarSalaT ts s1 s2
+	| salaT t == s1 = nuevoT (peliculaT t) s2 (usadoT t):cambiarSalaT ts s1 s2
 	| otherwise = t:cambiarSalaT ts s1 s2
