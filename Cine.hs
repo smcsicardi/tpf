@@ -83,7 +83,7 @@ peliculaC :: Cine -> Sala -> Pelicula
 peliculaC (SalaSinPelicula c _) s = peliculaC c s
 peliculaC (SalaConPelicula c t p _) s 
 	|t == s = p
-	|otherwise peliculaC c s
+	|otherwise = peliculaC c s
 peliculaC (TicketVendido c _) s = peliculaC c s
 
 venderTicket :: Cine -> Pelicula -> (Cine, Ticket)
