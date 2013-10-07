@@ -110,9 +110,9 @@ cineConIngreso (TicketVendido c ti) s t
 agregaEspectadorASala :: Cine -> Sala -> Cine  
 agregaEspectadorASala (SalaSinPelicula c sa) s = SalaSinPelicula (agregaEspectadorASala c s) sa
 agregaEspectadorASala (SalaConPelicula c sa p e) s
-	|sa == s = (SalaConPelicula c sa p (e+1))
+	|sa == s = (SalaConPelicula c s p (e+1))
 	|otherwise = (SalaConPelicula (agregaEspectadorASala c s) sa p e)
-agregaEspectadorASala (TicketVendido c t) = TicketVendido (agregaEspectadorASala c s) t
+agregaEspectadorASala (TicketVendido c t) s = TicketVendido (agregaEspectadorASala c s) t
 
 pasarA3DUnaPeliculaC :: Cine -> Nombre -> (Cine,Pelicula)
 pasarA3DUnaPeliculaC c n = (cineConPeliA3D c n, peliA3D (peliDelCine n c))
