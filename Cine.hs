@@ -111,7 +111,7 @@ pasarA3DUnaPeliculaC :: Cine -> Nombre -> (Cine,Pelicula)
 pasarA3DUnaPeliculaC c n = (cineConPeliA3D c n, peliA3D (peliDelCine n c))
 	
 peliA3D :: Pelicula -> Pelicula
-peliA3D p = nuevaP (nombreP p) (generosP p) (actoresP p) False
+peliA3D p = nuevaP (nombreP p) (generosP p) (actoresP p) True
 
 peliDelCine :: Nombre -> Cine -> Pelicula
 peliDelCine n (SalaConPelicula c _ p _)
