@@ -1,4 +1,5 @@
-module Ticket (Ticket, nuevoT, salaT, peliculaT, usadoT, usarT, peliculaMenosVistaT, todosLosTicketsParaLaMismaSalaT, cambiarSalaT) 	where
+module Ticket (Ticket, nuevoT, salaT, peliculaT, usadoT, usarT, peliculaMenosVistaT,
+ todosLosTicketsParaLaMismaSalaT, cambiarSalaT)   where
 
 import Tipos
 import Pelicula
@@ -39,8 +40,8 @@ peliculaMenosVistaT x = menosVista (pelisEnTickets x) x
 vecesVista :: Pelicula -> [Ticket] -> Int
 vecesVista _ [] = 0
 vecesVista p (x:xs)
-	| usadoT x && p == (peliculaT x) = 1 + vecesVista p xs
-	| otherwise = vecesVista p xs
+  | usadoT x && p == (peliculaT x) = 1 + vecesVista p xs
+  | otherwise = vecesVista p xs
 
 pelisEnTickets :: [Ticket] -> [Pelicula]
 pelisEnTickets n = limpiarRepetidos (todasLasPelis n)
@@ -48,11 +49,18 @@ pelisEnTickets n = limpiarRepetidos (todasLasPelis n)
         todasLasPelis (t:ts) = peliculaT t:todasLasPelis ts
 
 todosLosTicketsParaLaMismaSalaT :: [Ticket] -> Bool
-todosLosTicketsParaLaMismaSalaT (t:tt:ts) = (salaT t == salaT tt) && todosLosTicketsParaLaMismaSalaT (tt:ts)
+todosLosTicketsParaLaMismaSalaT (t:tt:ts) = 
+(salaT t == salaT tt) && todosLosTicketsParaLaMismaSalaT (tt:ts)
 todosLosTicketsParaLaMismaSalaT _ = True
 
 cambiarSalaT :: [Ticket] -> Sala -> Sala -> [Ticket]
 cambiarSalaT [] _ _ = []
 cambiarSalaT (t:ts) s1 s2
-	| salaT t == s1 = nuevoT (peliculaT t) s2 (usadoT t):cambiarSalaT ts s1 s2
-	| otherwise = t:cambiarSalaT ts s1 s2
+  | salaT t == s1 = nuevoT (peliculaT t) s2 (usadoT t):cambiarSalaT ts s1 s2
+  | otherwise = t:cambiarSalaT ts s1 s2
+
+limpiarRepetidos :: (Eq a) => [a] -> [a]
+limpiarRepetidos [] = []
+limpiarRepetidos (x:xs)
+  | elem x xs = limpiarRepetidos xs
+  | otherwise = x:limpiarRepetidos xs

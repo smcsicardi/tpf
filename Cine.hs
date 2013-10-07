@@ -1,4 +1,6 @@
-module Cine (nuevoC, nombreC, peliculasC, salasC, espectadoresC, salaC, ticketsVendidosC,  abrirSalaC, agregarPeliculaC, cerrarSalaC, cerrarSalasC, cerrarSalasDeLaCadenaC, peliculaC, venderTicketC, ingresarASalaC, pasarA3DUnaPeliculaC ) where
+module Cine (nuevoC, nombreC, peliculasC, salasC, espectadoresC, salaC, ticketsVendidosC,
+abrirSalaC, agregarPeliculaC, cerrarSalaC, cerrarSalasC, cerrarSalasDeLaCadenaC, peliculaC, 
+venderTicketC, ingresarASalaC, pasarA3DUnaPeliculaC ) where
 
 import Tipos
 import Pelicula
@@ -58,7 +60,8 @@ abrirSalaC :: Cine -> Sala -> Cine
 abrirSalaC c s = SalaSinPelicula c s
 
 agregarPeliculaC :: Cine -> Pelicula -> Sala -> Cine
-agregarPeliculaC (SalaConPelicula c sa pe e) p s = SalaConPelicula (agregarPeliculaC c p s) sa pe e
+agregarPeliculaC (SalaConPelicula c sa pe e) p s = 
+SalaConPelicula (agregarPeliculaC c p s) sa pe e
 agregarPeliculaC (TicketVendido c t) p s = TicketVendido (agregarPeliculaC c p s) t
 agregarPeliculaC (SalaSinPelicula c sa) p s 
   | s == sa = SalaConPelicula c s p 0
@@ -98,24 +101,26 @@ venderTicketC c p = (TicketVendido c t, t)
 
 ingresarASalaC :: Cine -> Sala -> Ticket -> (Cine, Ticket)
 ingresarASalaC c s t = (cineConIngreso c s t, usarT t)
-	
+  
 cineConIngreso :: Cine -> Sala -> Ticket -> Cine
 cineConIngreso (SalaSinPelicula c sa) s t = SalaSinPelicula (cineConIngreso c s t) sa
-cineConIngreso (SalaConPelicula c sa p e) s t = SalaConPelicula (cineConIngreso c s t) sa p e
+cineConIngreso (SalaConPelicula c sa p e) s t =
+ SalaConPelicula (cineConIngreso c s t) sa p e
 cineConIngreso (TicketVendido c ti) s t 
   | ti == t = agregaEspectadorASala c s
   | otherwise = TicketVendido (cineConIngreso c s t) ti
 
 agregaEspectadorASala :: Cine -> Sala -> Cine  
 agregaEspectadorASala (TicketVendido c t) s = TicketVendido (agregaEspectadorASala c s) t
-agregaEspectadorASala (SalaSinPelicula c sa) s = SalaSinPelicula (agregaEspectadorASala c s) sa
+agregaEspectadorASala (SalaSinPelicula c sa) s =
+ SalaSinPelicula (agregaEspectadorASala c s) sa
 agregaEspectadorASala (SalaConPelicula c sa p e) s
   | sa == s = SalaConPelicula c s p (e + 1)
   | otherwise = SalaConPelicula (agregaEspectadorASala c s) sa p e
 
 pasarA3DUnaPeliculaC :: Cine -> Nombre -> (Cine,Pelicula)
 pasarA3DUnaPeliculaC c n = (cineConPeliA3D c n, peliA3D (peliDelCine n c))
-	
+  
 peliA3D :: Pelicula -> Pelicula
 peliA3D p = nuevaP (nombreP p) (generosP p) (actoresP p) True
 
