@@ -57,6 +57,13 @@ ticketsVendidosC (TicketVendido c t)
 abrirSalaC :: Cine -> Sala -> Cine
 abrirSalaC c s = SalaSinPelicula c s
 
+agregarPeliculaC :: Cine -> Pelicula -> Sala -> Cine
+agregarPeliculaC (SalaSinPelicula c sa) p s 
+	|s == sa = SalaConPelicula c s p 0
+	|otherwise = SalaSinPelicula (agregarPeliculaC c p s) sa
+agregarPeliculaC (SalaConPelicula c sa pe e) p s = SalaConPelicula (agregarPeliculaC c p s) sa pe e
+agregarPeliculaC (TicketVendido c t) p s = TicketVendido (agregarPeliculaC c p s) t
+
 cerrarSalaC :: Cine -> Sala -> Cine
 cerrarSalaC (C n) s = C n
 cerrarSalaC (SalaSinPelicula c sc) s
