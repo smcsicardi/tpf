@@ -27,7 +27,6 @@ usadoT (TicketUsado _) = True
 usadoT _ = False
 
 usarT :: Ticket -> Ticket
-usarT (TicketUsado _) = error "El ticket ya estaba usado"
 usarT t = TicketUsado t
 
 peliculaMenosVistaT :: [Ticket] -> Pelicula
