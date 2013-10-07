@@ -107,7 +107,7 @@ cineConIngreso (TicketVendido c ti) s t
   |ti == t = agregaEspectadorASala c s
   |otherwise = TicketVendido (cineConIngreso c s t) ti
 
-agregaEspectadorASala Cine -> Sala -> Cine  
+agregaEspectadorASala :: Cine -> Sala -> Cine  
 agregaEspectadorASala (SalaSinPelicula c sa) s = SalaSinPelicula (agregaEspectadorASala c s) sa
 agregaEspectadorASala (SalaConPelicula c sa p e) s
 	|sa == s = SalaConPelicula c sa p (e+1)
