@@ -3,7 +3,6 @@ module Ticket (Ticket, nuevoT, salaT, peliculaT, usadoT, usarT, peliculaMenosVis
 
 import Tipos
 import Pelicula
-import Auxiliares
 
 data Ticket = TicketSinUsar Sala Pelicula | TicketUsado Ticket deriving (Show, Eq)
 
