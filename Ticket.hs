@@ -48,8 +48,7 @@ pelisEnTickets n = limpiarRepetidos (todasLasPelis n)
         todasLasPelis (t:ts) = peliculaT t:todasLasPelis ts
 
 todosLosTicketsParaLaMismaSalaT :: [Ticket] -> Bool
-todosLosTicketsParaLaMismaSalaT (t:tt:ts) = 
-(salaT t == salaT tt) && todosLosTicketsParaLaMismaSalaT (tt:ts)
+todosLosTicketsParaLaMismaSalaT (t:tt:ts) = (salaT t == salaT tt) && todosLosTicketsParaLaMismaSalaT (tt:ts)
 todosLosTicketsParaLaMismaSalaT _ = True
 
 cambiarSalaT :: [Ticket] -> Sala -> Sala -> [Ticket]

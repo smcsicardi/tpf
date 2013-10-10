@@ -60,8 +60,7 @@ abrirSalaC :: Cine -> Sala -> Cine
 abrirSalaC c s = SalaSinPelicula c s
 
 agregarPeliculaC :: Cine -> Pelicula -> Sala -> Cine
-agregarPeliculaC (SalaConPelicula c sa pe e) p s = 
-SalaConPelicula (agregarPeliculaC c p s) sa pe e
+agregarPeliculaC (SalaConPelicula c sa pe e) p s = SalaConPelicula (agregarPeliculaC c p s) sa pe e
 agregarPeliculaC (TicketVendido c t) p s = TicketVendido (agregarPeliculaC c p s) t
 agregarPeliculaC (SalaSinPelicula c sa) p s 
   | s == sa = SalaConPelicula c s p 0

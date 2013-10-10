@@ -37,8 +37,7 @@ generosDePelis ps = limpiarRepetidos (obtenerGeneros ps)
         obtenerGeneros (p:ps) = generosP p ++ obtenerGeneros ps
 
 generarSagaDePeliculasP :: [Actor] -> [Genero] -> [Nombre] -> [Pelicula]
-generarSagaDePeliculasP as gs (n:xs) = 
-nuevaP n gs as False:generarSagaDePeliculasP as gs xs
+generarSagaDePeliculasP as gs (n:xs) = (nuevaP n gs as False):(generarSagaDePeliculasP as gs xs)
 generarSagaDePeliculasP _ _ _ = []
 
 limpiarRepetidos :: (Eq a) => [a] -> [a]
